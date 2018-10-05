@@ -15,6 +15,7 @@ import javax.swing.JLabel;
 import model.SimplePlayer;
 import model.interfaces.GameEngine;
 import model.interfaces.Player;
+import controller.AddPlayerListener;
 
 public class GameGUI implements Observer{
 
@@ -53,18 +54,23 @@ public class GameGUI implements Observer{
 		Splayers=new ArrayList<String>();
 		for (Player player:gameEngine.getAllPlayers()){
 			Splayers.add("player "+player.getPlayerId());
+			System.out.println(player.getPlayerId());
 		}
 		Cplayers=new JComboBox<>(Splayers.toArray());
 		Lplayer_information=new JLabel("player infomation");
 		Badd=new JButton("add one player");
 		Lbet=new JLabel("bet");
 		Lcard=new JLabel("card");
+//		AddPlayerListener addAction = new AddPlayerListener(gameEngine, Splayers, Cplayers,this);
 		Badd.addActionListener(test);
 		//System.out.println("tsy1");
 		refresh();
 	}
 
 	public void refresh(){
+		System.out.println("aa");
+		
+		
 		if (f!=null)f.setVisible(false);
 		f=new JFrame();
 		f.setLayout(null);
@@ -105,9 +111,9 @@ public class GameGUI implements Observer{
 	}
 
 	@Override
-	public void update(Observable arg0, Object arg1) {
+	public void update(Observable arg0, Object b) {
 		// TODO Auto-generated method stub
-		System.out.println("aa");
+		System.out.println((String)b);
 		
 	}
 
