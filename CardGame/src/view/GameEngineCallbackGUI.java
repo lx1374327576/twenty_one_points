@@ -1,14 +1,24 @@
 package view;
 
+import java.util.Observable;
+
+import javafx.beans.InvalidationListener;
 import model.interfaces.GameEngine;
 import model.interfaces.Player;
 import model.interfaces.PlayingCard;
 import view.interfaces.GameEngineCallback;
+import view.GameGUI;
 
-public class GameEngineCallbackGUI extends GameGUI implements GameEngineCallback {
+public class GameEngineCallbackGUI extends Observable implements GameEngineCallback{
 
 	public GameEngineCallbackGUI(GameEngine gameEngine){
-		super(gameEngine);
+		GameGUI gameUI = new GameGUI(gameEngine);
+		this.addObserver(gameUI);
+	}
+	
+	public void test() {
+		setChanged();
+		notifyObservers(this);
 	}
 
 	@Override
@@ -46,5 +56,7 @@ public class GameEngineCallbackGUI extends GameGUI implements GameEngineCallback
 		// TODO Auto-generated method stub
 
 	}
+
+	
 
 }

@@ -1,11 +1,11 @@
 package view;
 
-import java.awt.Component;
-import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Observable;
+import java.util.Observer;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -16,7 +16,7 @@ import model.SimplePlayer;
 import model.interfaces.GameEngine;
 import model.interfaces.Player;
 
-public class GameGUI {
+public class GameGUI implements Observer{
 
 	protected GameEngine gameEngine;
 	protected JFrame f;
@@ -102,6 +102,13 @@ public class GameGUI {
 		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		f.setSize(800,800);
 		f.setVisible(true);
+	}
+
+	@Override
+	public void update(Observable arg0, Object arg1) {
+		// TODO Auto-generated method stub
+		System.out.println("aa");
+		
 	}
 
 }
