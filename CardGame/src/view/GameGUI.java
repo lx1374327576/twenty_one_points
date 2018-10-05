@@ -19,7 +19,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
-import javax.swing.JTextArea;
+import javax.swing.JTextField;
 import javax.swing.UIManager;
 
 import model.SimplePlayer;
@@ -39,7 +39,7 @@ public class GameGUI implements Observer{
 	public JButton Bstart,Badd,Bup,Bdown,Bbet;
 	public JComboBox<Object> Cplayers;
 	public JLabel Lsummary,Lplayer_information,Lcard,Lhouse,Lresult,Lstatus;
-	public JTextArea Tsummary,Tcard,Thouse,Tbet;
+	public JTextField Tsummary,Tcard,Thouse,Tbet;
 	public List<Player> Splayers;
 	public ActionListener BaddListener,BstartListener;
 	public JMenu Mmenu,Mtools,Mstatus;
@@ -52,7 +52,7 @@ public class GameGUI implements Observer{
 
 	public GameGUI(GameEngine gameEngine){
 		this.gameEngine=gameEngine;
-		System.out.println("Hello world!");
+		System.out.println("Hello \n world!");
 		refresh();
 	}
 
@@ -74,7 +74,7 @@ public class GameGUI implements Observer{
 		Mstatus=new JMenu("status");
 		panel=new JPanel();
 		Lsummary=new JLabel("summary:");
-		Tsummary=new JTextArea("summary information");
+		Tsummary=new JTextField("summary information");
 		Tsummary.setEditable(false);
 		Bstart=new JButton("start");
 		Splayers=new ArrayList<Player>();
@@ -91,11 +91,11 @@ public class GameGUI implements Observer{
 		Bdown=new JButton("last");
 		Bbet=new JButton("bet");
 		Lcard=new JLabel("card");
-		Tcard=new JTextArea("card information");
+		Tcard=new JTextField("card information");
 		Tcard.setEditable(false);
 		Lhouse=new JLabel("house");
-		Thouse=new JTextArea("Thouse information");
-		Tbet=new JTextArea("Bet information");
+		Thouse=new JTextField("Thouse information");
+		Tbet=new JTextField("Bet information");
 		Thouse.setEditable(false);
 		Tbet.setEditable(false);
 		//Tplayer_information.setEditable(false);
@@ -197,18 +197,10 @@ public class GameGUI implements Observer{
 				Lstatus.setText("finished");
 			break;
 			case 4:
-				house_ans+=((PlayingCard)obj).getScore();
-				Thouse.setText("house result="+String.valueOf(house_ans));
 			break;
 			case 5:
 			break;
 			case 6:
-				String tmp=new String();
-				tmp="house result="+String.valueOf(house_ans)+"\n";
-				for (Player player:gameEngine.getAllPlayers()){
-					tmp=tmp+player.getPlayerName()+":"+String.valueOf(player.getResult())+"\n";
-				}
-				Thouse.setText(tmp);
 			break;
 		}
 
@@ -224,7 +216,7 @@ public class GameGUI implements Observer{
         UIManager.put("ComboBox.font", font);
         UIManager.put("DesktopIcon.font", font);
         UIManager.put("EditorPane.font", font);
-        UIManager.put("FormattedTextArea.font", font);
+        UIManager.put("FormattedTextField.font", font);
         UIManager.put("InternalFrame.titleFont", font);
         UIManager.put("Label.font", font);
         UIManager.put("List.font", font);
