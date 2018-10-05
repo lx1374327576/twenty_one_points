@@ -47,11 +47,12 @@ public class GameGUI implements Observer{
 	public JMenuBar MMenuBar;
 	public JPanel panel,Tplayer_information;
 	public GridLayout playerGridLayout;
-	public int ans;
+	public int ans,house_ans;
 
 
 	public GameGUI(GameEngine gameEngine){
 		this.gameEngine=gameEngine;
+		System.out.println("Hello \n world!");
 		refresh();
 	}
 
