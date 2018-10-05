@@ -13,17 +13,17 @@ import view.GameGUI;
 
 public class AddPlayerListener implements ActionListener {
 	private static GameEngine gameEngine;
-	private static List<String> Splayers;
+	private static List<Player> Splayers;
 	private static JComboBox<Object> Cplayers;
 	private static GameGUI method;
-	
-	public AddPlayerListener(GameEngine gameEngine,List<String> Splayers,JComboBox<Object> Cplayers,GameGUI method) {
+
+	public AddPlayerListener(GameEngine gameEngine,List<Player> Splayers,JComboBox<Object> Cplayers,GameGUI method) {
 		this.gameEngine = gameEngine;
 		this.Splayers = Splayers;
 		this.Cplayers = Cplayers;
 		this.method = method;
 	}
-	
+
 
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
@@ -32,7 +32,7 @@ public class AddPlayerListener implements ActionListener {
 		int tmp=method.getPlayerNumber();
 		Player player=new SimplePlayer(Integer.toString(tmp+1),"tsy"+Integer.toString(tmp+1),(int)(1+Math.random()*10)*100);
 		gameEngine.addPlayer(player);
-        Splayers.add("player "+player.getPlayerId());
+        Splayers.add(player);
         Cplayers.addItem("player "+player.getPlayerId());
 	}
 
