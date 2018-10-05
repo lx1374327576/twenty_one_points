@@ -33,7 +33,6 @@ public class BetListener implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
 		// TODO Auto-generated method stub
-		String content = "";
 		boolean isBet = false;
 		if(Splayers.isEmpty()) {
 			return;
@@ -47,15 +46,17 @@ public class BetListener implements ActionListener{
 			isBet = thePlayer.placeBet(theBet);
 		}
 		if(!isBet) {
-			JOptionPane.showMessageDialog(null, "aaaaaaa", "bbbbb", JOptionPane.ERROR_MESSAGE);
+			thePlayer.getPoints();
+			JOptionPane.showMessageDialog(null, String.format("%s : Your balance is not sufficient", thePlayer.getPlayerName()), "ERROR", JOptionPane.ERROR_MESSAGE);
 			return;
 		}
 		for (Player player:Splayers) {
 			if(!(player.getBet()==0)) {
-				content += String.format( "%s : %d\n",player.getPlayerName(), player.getBet());
+				String content = String.format( "%s : %d\n",player.getPlayerName(), player.getBet());
+				Tbet.setText(content);
 			}
 		}
-		Tbet.setText(content);
+		
 		
 		
 		

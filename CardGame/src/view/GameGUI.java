@@ -1,6 +1,7 @@
 package view;
 
 import java.awt.Font;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -24,26 +25,32 @@ import javax.swing.UIManager;
 import model.SimplePlayer;
 import model.interfaces.GameEngine;
 import model.interfaces.Player;
+import model.interfaces.PlayingCard;
 import controller.AddPlayerListener;
 import controller.UpPlayerListener;
 import controller.DownPlayerListener;
 import controller.StartListener;
 import controller.BetListener;
 
+import view.GameEngineCallbackGUI;
+
 public class GameGUI implements Observer{
 
-	protected GameEngine gameEngine;
-	protected JFrame f;
-	protected JButton Bstart,Badd,Bup,Bdown,Bbet;
-	protected JComboBox<Object> Cplayers;
-	protected JLabel Lsummary,Lplayer_information,Lcard,Lhouse;
-	protected JTextField Tplayer_information,Tsummary,Tcard,Thouse,Tbet;
-	protected List<Player> Splayers;
-	protected ActionListener BaddListener,BstartListener;
-	protected JMenu Mmenu,Mtools,Mstatus;
-	protected JMenuItem Mrestart,Mexit;
-	protected JMenuBar MMenuBar;
-	protected JPanel panel;
+	public GameEngine gameEngine;
+	public JFrame f;
+	public JButton Bstart,Badd,Bup,Bdown,Bbet;
+	public JComboBox<Object> Cplayers;
+	public JLabel Lsummary,Lplayer_information,Lcard,Lhouse,Lresult,Lstatus;
+	public JTextField Tsummary,Tcard,Thouse,Tbet;
+	public List<Player> Splayers;
+	public ActionListener BaddListener,BstartListener;
+	public JMenu Mmenu,Mtools,Mstatus;
+	public JMenuItem Mrestart,Mexit;
+	public JMenuBar MMenuBar;
+	public JPanel panel,Tplayer_information;
+	public GridLayout playerGridLayout;
+	public int ans;
+
 
 
 	public GameGUI(GameEngine gameEngine){
@@ -91,19 +98,19 @@ public class GameGUI implements Observer{
 		Lhouse=new JLabel("house");
 		Thouse=new JTextField("Thouse information");
 		Tbet=new JTextField("Bet information");
-		Tplayer_information=new JTextField("specific information");
+		Tbet.setColumns(1);
 		Thouse.setEditable(false);
 		Tbet.setEditable(false);
-		Tplayer_information.setEditable(false);
-		
-		
-		
+		//Tplayer_information.setEditable(false);
+
+
+
 		AddPlayerListener addListener = new AddPlayerListener(gameEngine, Splayers, Cplayers, this);
 		Badd.addActionListener(addListener);
-		
+
 		UpPlayerListener upListener = new UpPlayerListener(gameEngine, Cplayers, this);
 		Bup.addActionListener(upListener);
-		
+
 		DownPlayerListener downListener = new DownPlayerListener(gameEngine, Cplayers, this);
 		Bdown.addActionListener(downListener);
 		
@@ -113,15 +120,13 @@ public class GameGUI implements Observer{
 		BetListener betListener = new BetListener(gameEngine, Splayers, Cplayers,Tbet, this);
 		Bbet.addActionListener(betListener);
 
-		
-
 		Lsummary.setBounds(20, 80, 300, 50);
 		Tsummary.setBounds(20, 130,300, 300);
 		//Mmenu.setBounds(0, 0, 200, 50);
 		Cplayers.setBounds(20, 520, 200, 50);
 		Bstart.setBounds(550, 400, 100, 50);
 		Lplayer_information.setBounds(20, 450, 200, 50);
-		Tplayer_information.setBounds(230, 450, 300, 250);
+		//Tplayer_information.setBounds(230, 450, 300, 250);
 		Bup.setBounds(20, 600, 80, 60);
 		Bdown.setBounds(120, 600, 80, 60);
 		Badd.setBounds(550, 500, 200, 200);
@@ -132,6 +137,22 @@ public class GameGUI implements Observer{
 		Bbet.setBounds(330, 240, 200, 50);
 		Tbet.setBounds(330,290,200,150);
 		panel.setBounds(0, 0, 200, 30);
+
+		Cplayers.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+				System.out.println("Cplayers listener added!");
+				Tplayer_information=new JPanel();
+				Tplayer_information.setBounds(230, 450, 300, 250);
+				playerGridLayout=new GridLayout(4,4);
+				Tplayer_information.setLayout(playerGridLayout);
+				Lstatus=new JLabel("no action");
+				Lresult=new JLabel("total=0");
+				Tplayer_information.add(Lstatus);
+				Tplayer_information.add(Lresult);
+				f.add(Tplayer_information);
+				ans=0;
+			}
+		});
 
 		Mexit.addMouseListener(new MouseAdapter() {
 			@Override
@@ -155,7 +176,7 @@ public class GameGUI implements Observer{
 		f.add(Cplayers);
 		f.add(Bstart);
 		f.add(Lplayer_information);
-		f.add(Tplayer_information);
+		//f.add(Tplayer_information);
 		f.add(Badd);
 		f.add(Lcard);
 		f.add(Tcard);
@@ -168,9 +189,30 @@ public class GameGUI implements Observer{
 	}
 
 	@Override
-	public void update(Observable arg0, Object arg1) {
+	public void update(Observable server, Object obj) {
 		// TODO Auto-generated method stub
-		System.out.println("aa");
+		System.out.println("Observer get!");
+		switch (((GameEngineCallbackGUI) server).getFlag()){
+			case 1:
+				Lstatus.setText("gaming");
+				ans=ans+((PlayingCard)obj).getScore();
+				Lresult.setText("result="+String.valueOf(ans));
+				Tplayer_information.add(new JLabel(((PlayingCard)obj).getSuit().toString()+((PlayingCard)obj).getValue().toString()));
+			break;
+			case 2:
+				Lstatus.setText("boom!");
+				Tplayer_information.add(new JLabel(((PlayingCard)obj).getSuit().toString()+((PlayingCard)obj).getValue().toString()));
+			break;
+			case 3:
+				Lstatus.setText("finished");
+			break;
+			case 4:
+			break;
+			case 5:
+			break;
+			case 6:
+			break;
+		}
 
 	}
 
