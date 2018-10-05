@@ -3,6 +3,8 @@ package view;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
@@ -33,39 +35,32 @@ public class GameGUI implements Observer{
 	protected JTextField Tplayer_information,Tsummary,Tcard,Thouse,Tbet;
 	protected List<String> Splayers;
 	protected ActionListener BaddListener,BstartListener;
-	protected JMenu Mmenu;
-	protected JMenuItem Mhelp;
+	protected JMenu Mmenu,Mtools,Mstatus;
+	protected JMenuItem Mrestart,Mexit;
 	protected JMenuBar MMenuBar;
 	protected JPanel panel;
 
 
 	public GameGUI(GameEngine gameEngine){
 		this.gameEngine=gameEngine;
-		//System.out.println("tsy");
+		refresh();
+	}
+
+	public void refresh(){
+
+		if (f!=null) f.setVisible(false);
 		f=new JFrame();
 		f.setTitle("Game Machine");
 		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		f.setSize(800,800);
 		f.setLayout(null);
-
-		BaddListener=new ActionListener(){
-			public void actionPerformed(ActionEvent e){
-				System.out.println("add one!");
-				int tmp=getPlayerNumber();
-				Player player=new SimplePlayer(Integer.toString(tmp+1),"tsy"+Integer.toString(tmp+1),(int)(1+Math.random()*10)*100);
-				gameEngine.addPlayer(player);
-		        Splayers.add("player "+player.getPlayerId());
-		        Cplayers.addItem("player "+player.getPlayerId());
-//		        gridLayout.setVisible(false);
-		        //refresh();
-//		        gridLayout.myshow();
-			}
-		};
-
 		set_font();
 		MMenuBar=new JMenuBar();
 		Mmenu=new JMenu("Menu");
-		Mhelp=new JMenuItem("help");
+		Mrestart=new JMenuItem("restart");
+		Mexit=new JMenuItem("exit");
+		Mtools=new JMenu("tools");
+		Mstatus=new JMenu("status");
 		panel=new JPanel();
 		Lsummary=new JLabel("summary:");
 		Tsummary=new JTextField("summary information");
@@ -73,7 +68,7 @@ public class GameGUI implements Observer{
 		Bstart=new JButton("start");
 		Splayers=new ArrayList<String>();
 		for (Player player:gameEngine.getAllPlayers()){
-			Splayers.add("player "+player.getPlayerId());
+			gameEngine.removePlayer(player);
 		}
 		Cplayers=new JComboBox<>(Splayers.toArray());
 		Lplayer_information=new JLabel("player infomation:");
@@ -93,6 +88,15 @@ public class GameGUI implements Observer{
 		Bup=new JButton("next");
 		Bdown=new JButton("last");
 
+		AddPlayerListener addListener = new AddPlayerListener(gameEngine, Splayers, Cplayers, this);
+		Badd.addActionListener(addListener);
+
+		UpPlayerListener upListener = new UpPlayerListener(gameEngine, Cplayers, this);
+		Bup.addActionListener(upListener);
+
+		DownPlayerListener downListener = new DownPlayerListener(gameEngine, Cplayers, this);
+		Bdown.addActionListener(downListener);
+
 
 		Lsummary.setBounds(20, 80, 300, 50);
 		Tsummary.setBounds(20, 130,300, 300);
@@ -110,20 +114,22 @@ public class GameGUI implements Observer{
 		Thouse.setBounds(330,80,200,150);
 		Lbet.setBounds(330, 240, 200, 50);
 		Tbet.setBounds(330,290,200,150);
-		panel.setBounds(0, 0, 50, 30);
+		panel.setBounds(0, 0, 200, 30);
 
-		Mmenu.add(Mhelp);
+		Mexit.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent e) {//只能检测到mousePressed事件
+					super.mouseClicked(e);
+					System.exit(0);
+				}
+		});
+
+		Mmenu.add(Mrestart);
+		Mmenu.add(Mexit);
 		MMenuBar.add(Mmenu);
+		MMenuBar.add(Mtools);
+		MMenuBar.add(Mstatus);
 		panel.add(MMenuBar);
-
-		//panel.setVisible(true);
-
-		//System.out.println("tsy1");
-		refresh();
-	}
-
-	public void refresh(){
-
 		f.add(panel);
 		f.add(Bdown);
 		f.add(Bup);
