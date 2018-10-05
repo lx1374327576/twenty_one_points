@@ -30,6 +30,7 @@ public class UpPlayerListener implements ActionListener{
 		method.Lresult=new JLabel("total=0");
 		method.Tplayer_information.add(method.Lstatus);
 		method.Tplayer_information.add(method.Lresult);
+		method.f.add(method.Tplayer_information);
 		method.ans=0;
 	}
 
