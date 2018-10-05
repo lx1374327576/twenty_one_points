@@ -6,7 +6,7 @@ import java.util.List;
 
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
-import javax.swing.JTextField;
+import javax.swing.JTextArea;
 
 import model.interfaces.GameEngine;
 import model.interfaces.Player;
@@ -17,11 +17,11 @@ public class BetListener implements ActionListener{
 	private static GameEngine gameEngine;
 	private static List<Player> Splayers;
 	private static JComboBox<Object> Cplayers;
-	private static JTextField Tbet;
+	private static JTextArea Tbet;
 	private static GameGUI method;
 	
 	public  BetListener(GameEngine gameEngine,List<Player> Splayers,JComboBox<Object> Cplayers,
-			JTextField Tbet,GameGUI method){
+			JTextArea Tbet,GameGUI method){
 		this.gameEngine = gameEngine;
 		this.Splayers = Splayers;
 		this.Cplayers = Cplayers;
@@ -50,10 +50,11 @@ public class BetListener implements ActionListener{
 			JOptionPane.showMessageDialog(null, String.format("%s : Your balance is not sufficient", thePlayer.getPlayerName()), "ERROR", JOptionPane.ERROR_MESSAGE);
 			return;
 		}
+		Tbet.setText("");
 		for (Player player:Splayers) {
 			if(!(player.getBet()==0)) {
 				String content = String.format( "%s : %d\n",player.getPlayerName(), player.getBet());
-				Tbet.setText(content);
+				Tbet.append(content + "\r\n");
 			}
 		}
 		
