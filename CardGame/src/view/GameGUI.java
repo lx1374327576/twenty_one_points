@@ -117,11 +117,10 @@ public class GameGUI implements Observer{
 	@Override
 	public void update(Observable arg0, Object b) {
 		// TODO Auto-generated method stub
-<<<<<<< HEAD
+
 		System.out.println((String)b);
 		
-=======
-		System.out.println("aa");
+
 
 	}
 
@@ -174,7 +173,7 @@ public class GameGUI implements Observer{
 			ans++;
 		}
 		return ans;
->>>>>>> 68d1941bc39a0af3118331d30147bf2546da83d6
+
 	}
 
 }
