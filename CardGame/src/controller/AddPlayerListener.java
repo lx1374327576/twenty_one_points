@@ -33,8 +33,7 @@ public class AddPlayerListener implements ActionListener {
 		Player player=new SimplePlayer(Integer.toString(tmp+1),"tsy"+Integer.toString(tmp+1),(int)(1+Math.random()*10)*100);
 		gameEngine.addPlayer(player);
         Splayers.add("player "+player.getPlayerId());
-        Cplayers=new JComboBox<>(Splayers.toArray());
-        method.refresh();  
+        Cplayers.addItem("player "+player.getPlayerId());
 	}
 
 }

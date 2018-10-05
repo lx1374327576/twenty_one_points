@@ -22,6 +22,9 @@ import javax.swing.UIManager;
 import model.SimplePlayer;
 import model.interfaces.GameEngine;
 import model.interfaces.Player;
+import controller.AddPlayerListener;
+import controller.UpPlayerListener;
+import controller.DownPlayerListener;
 
 public class GameGUI implements Observer{
 
@@ -48,19 +51,19 @@ public class GameGUI implements Observer{
 		f.setSize(800,800);
 		f.setLayout(null);
 
-		BaddListener=new ActionListener(){
-			public void actionPerformed(ActionEvent e){
-				System.out.println("add one!");
-				int tmp=getPlayerNumber();
-				Player player=new SimplePlayer(Integer.toString(tmp+1),"tsy"+Integer.toString(tmp+1),(int)(1+Math.random()*10)*100);
-				gameEngine.addPlayer(player);
-		        Splayers.add("player "+player.getPlayerId());
-		        Cplayers.addItem("player "+player.getPlayerId());
-//		        gridLayout.setVisible(false);
-		        //refresh();
-//		        gridLayout.myshow();
-			}
-		};
+//		BaddListener=new ActionListener(){
+//			public void actionPerformed(ActionEvent e){
+//				System.out.println("add one!");
+//				int tmp=getPlayerNumber();
+//				Player player=new SimplePlayer(Integer.toString(tmp+1),"tsy"+Integer.toString(tmp+1),(int)(1+Math.random()*10)*100);
+//				gameEngine.addPlayer(player);
+//		        Splayers.add("player "+player.getPlayerId());
+//		        Cplayers.addItem("player "+player.getPlayerId());
+////		        gridLayout.setVisible(false);
+//		        //refresh();
+////		        gridLayout.myshow();
+//			}
+//		};
 
 		set_font();
 		MMenuBar=new JMenuBar();
@@ -76,8 +79,13 @@ public class GameGUI implements Observer{
 			Splayers.add("player "+player.getPlayerId());
 		}
 		Cplayers=new JComboBox<>(Splayers.toArray());
+		Cplayers.firePopupMenuWillBecomeInvisible();
+		Cplayers.setEditable(false);
+//		Cplayers.setEnabled(false);
 		Lplayer_information=new JLabel("player infomation:");
 		Badd=new JButton("add one player");
+		Bup=new JButton("next");
+		Bdown=new JButton("last");
 		Lbet=new JLabel("bet");
 		Lcard=new JLabel("card");
 		Tcard=new JTextField("card information");
@@ -85,13 +93,21 @@ public class GameGUI implements Observer{
 		Lhouse=new JLabel("house");
 		Thouse=new JTextField("Thouse information");
 		Tbet=new JTextField("Bet information");
+		Tplayer_information=new JTextField("specific information");
 		Thouse.setEditable(false);
 		Tbet.setEditable(false);
-		Badd.addActionListener(BaddListener);
-		Tplayer_information=new JTextField("specific information");
 		Tplayer_information.setEditable(false);
-		Bup=new JButton("next");
-		Bdown=new JButton("last");
+		
+		
+		
+		AddPlayerListener addListener = new AddPlayerListener(gameEngine, Splayers, Cplayers, this);
+		Badd.addActionListener(addListener);
+		
+		UpPlayerListener upListener = new UpPlayerListener(gameEngine, Cplayers, this);
+		Bup.addActionListener(upListener);
+		
+		DownPlayerListener downListener = new DownPlayerListener(gameEngine, Cplayers, this);
+		Bdown.addActionListener(downListener);
 
 
 		Lsummary.setBounds(20, 80, 300, 50);
