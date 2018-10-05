@@ -20,7 +20,7 @@ public class GameEngineImpl implements GameEngine {
 	private HashSet<GameEngineCallback> gameEngineCallbacks = new HashSet<GameEngineCallback>();
 	private HashMap<String, Player> allPlayers = new HashMap<String, Player>();
 	Deque<PlayingCard> cards = null;
-	
+
 	//Cards initialization
 	public GameEngineImpl() {
 		cards = getShuffledDeck();
@@ -170,7 +170,7 @@ public class GameEngineImpl implements GameEngine {
 		Collections.shuffle(tempCards);
 		return tempCards;
 	}
-	
+
 	/**
 	 * Interval for each deal
 	 * @param delay
@@ -196,7 +196,7 @@ public class GameEngineImpl implements GameEngine {
 		cards.removeFirst();
 		return card;
 	}
-	
+
 	/**
 	 * Calculate player's score
 	 * @param preResult

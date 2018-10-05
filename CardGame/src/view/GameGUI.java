@@ -1,5 +1,6 @@
 package view;
 
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -11,6 +12,7 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.UIManager;
 
 import model.SimplePlayer;
 import model.interfaces.GameEngine;
@@ -25,7 +27,7 @@ public class GameGUI implements Observer{
 	protected JComboBox<Object> Cplayers,Cmenu;
 	protected JLabel Lsummary,Lplayer_information,Lcard,Lhouse,Lbet;
 	protected List<String> Splayers;
-	protected ActionListener test;
+	protected ActionListener BaddListener,BstartListener;
 
 
 	public GameGUI(GameEngine gameEngine){
@@ -33,13 +35,12 @@ public class GameGUI implements Observer{
 		//System.out.println("tsy");
 
 
-		test=new ActionListener(){
+		BaddListener=new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				System.out.println("add one!");
-				Player player=new SimplePlayer("4","tsy",2000);
+				int tmp=getPlayerNumber();
+				Player player=new SimplePlayer(Integer.toString(tmp+1),"tsy"+Integer.toString(tmp+1),(int)(1+Math.random()*10)*100);
 				gameEngine.addPlayer(player);
-		        gameEngine.placeBet(player, 100);
-		        gameEngine.dealPlayer(player, 1);
 		        Splayers.add("player "+player.getPlayerId());
 		        Cplayers=new JComboBox<>(Splayers.toArray());
 //		        gridLayout.setVisible(false);
@@ -48,6 +49,7 @@ public class GameGUI implements Observer{
 			}
 		};
 
+		set_font();
 		Cmenu=new JComboBox<>();
 		Lsummary=new JLabel("summary:");
 		Bstart=new JButton("start");
@@ -62,7 +64,9 @@ public class GameGUI implements Observer{
 		Lbet=new JLabel("bet");
 		Lcard=new JLabel("card");
 //		AddPlayerListener addAction = new AddPlayerListener(gameEngine, Splayers, Cplayers,this);
-		Badd.addActionListener(test);
+
+		Badd.addActionListener(BaddListener);
+
 		//System.out.println("tsy1");
 		refresh();
 	}
@@ -81,19 +85,19 @@ public class GameGUI implements Observer{
 		Cmenu.setBounds(0, 0, 100, 20);
 		f.add(Cmenu);
 
-		Cplayers.setBounds(20, 450, 100, 50);
+		Cplayers.setBounds(20, 450, 200, 50);
 		f.add(Cplayers);
 
-		Bstart.setBounds(600, 500, 100, 20);
+		Bstart.setBounds(550, 500, 100, 20);
 		f.add(Bstart);
 
 		Lplayer_information.setBounds(220, 450, 400, 200);
 		f.add(Lplayer_information);
 
-		Badd.setBounds(600, 600, 150, 20);
+		Badd.setBounds(550, 600, 200, 20);
 		f.add(Badd);
 
-		Lcard.setBounds(600 , 300, 100, 20);
+		Lcard.setBounds(550 , 300, 100, 20);
 		f.add(Lcard);
 
 		Lhouse=new JLabel("house");
@@ -113,8 +117,64 @@ public class GameGUI implements Observer{
 	@Override
 	public void update(Observable arg0, Object b) {
 		// TODO Auto-generated method stub
+<<<<<<< HEAD
 		System.out.println((String)b);
 		
+=======
+		System.out.println("aa");
+
+	}
+
+	public void set_font(){
+		Font font = new Font("ËÎÌו",Font.PLAIN,20);
+        UIManager.put("Button.font", font);
+        UIManager.put("CheckBox.font", font);
+        UIManager.put("CheckBoxMenuItem.acceleratorFont", font);
+        UIManager.put("CheckBoxMenuItem.font", font);
+        UIManager.put("ColorChooser.font", font);
+        UIManager.put("ComboBox.font", font);
+        UIManager.put("DesktopIcon.font", font);
+        UIManager.put("EditorPane.font", font);
+        UIManager.put("FormattedTextField.font", font);
+        UIManager.put("InternalFrame.titleFont", font);
+        UIManager.put("Label.font", font);
+        UIManager.put("List.font", font);
+        UIManager.put("Menu.acceleratorFont", font);
+        UIManager.put("Menu.font", font);
+        UIManager.put("MenuBar.font", font);
+        UIManager.put("MenuItem.acceleratorFont", font);
+        UIManager.put("MenuItem.font", font);
+        UIManager.put("OptionPane.font", font);
+        UIManager.put("Panel.font", font);
+        UIManager.put("PasswordField.font", font);
+        UIManager.put("PopupMenu.font", font);
+        UIManager.put("ProgressBar.font", font);
+        UIManager.put("RadioButton.font", font);
+        UIManager.put("RadioButtonMenuItem.acceleratorFont", font);
+        UIManager.put("RadioButtonMenuItem.font", font);
+        UIManager.put("ScrollPane.font", font);
+        UIManager.put("Spinner.font", font);
+        UIManager.put("TabbedPane.font", font);
+        UIManager.put("Table.font", font);
+        UIManager.put("TableHeader.font", font);
+        UIManager.put("TextArea.font", font);
+        UIManager.put("TextField.font", font);
+        UIManager.put("TextPane.font", font);
+        UIManager.put("TitledBorder.font", font);
+        UIManager.put("ToggleButton.font", font);
+        UIManager.put("ToolBar.font", font);
+        UIManager.put("ToolTip.font", font);
+        UIManager.put("Tree.font", font);
+        UIManager.put("Viewport.font", font);
+	}
+
+	public int getPlayerNumber(){
+		int ans=0;
+		for (Player player:gameEngine.getAllPlayers()){
+			ans++;
+		}
+		return ans;
+>>>>>>> 68d1941bc39a0af3118331d30147bf2546da83d6
 	}
 
 }

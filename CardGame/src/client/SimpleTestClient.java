@@ -44,7 +44,6 @@ public class SimpleTestClient
 //      Player[] players = new Player[] { };
 //      Player[] players = new Player[] { new SimplePlayer("1", "The Shark", 0)};
 //      Player[] players = new Player[] { new SimplePlayer("1", "The Shark1", 1000), new SimplePlayer("1", "The Shark2", 500)};
-      Player[] players = new Player[] { new SimplePlayer("1", "The Shark", 1000), new SimplePlayer("2", "The Loser", 500), new SimplePlayer("3", "The Winner 2",5000) };
 //    List<Player> players = initPlayers();
 
 
@@ -54,19 +53,12 @@ public class SimpleTestClient
       //printCards(shuffledDeck);
 
       // main loop to add players, place a bet and receive hand
-      for (Player player : players)
-      {
-         gameEngine.addPlayer(player);
-         gameEngine.placeBet(player, 100);
-         gameEngine.dealPlayer(player, 1);
-      }
 
    // add logging callback
       gameEngine.addGameEngineCallback(new GameEngineCallbackGUI(gameEngine));
 
       // all players have played so now house deals
       // GameEngineCallBack.houseResult() is called to log all players (after results are calculated)
-      gameEngine.dealHouse(10);
    }
 
 	private static List<Player> initPlayers() {
