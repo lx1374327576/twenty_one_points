@@ -19,19 +19,18 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
-import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.UIManager;
-import javax.swing.text.Highlighter;
 
-import controller.AddPlayerListener;
-import controller.BetListener;
-import controller.DownPlayerListener;
-import controller.StartListener;
-import controller.UpPlayerListener;
+import model.SimplePlayer;
 import model.interfaces.GameEngine;
 import model.interfaces.Player;
 import model.interfaces.PlayingCard;
+import controller.AddPlayerListener;
+import controller.UpPlayerListener;
+import controller.DownPlayerListener;
+
+import view.GameEngineCallbackGUI;
 
 public class GameGUI implements Observer{
 
@@ -40,7 +39,7 @@ public class GameGUI implements Observer{
 	public JButton Bstart,Badd,Bup,Bdown,Bbet;
 	public JComboBox<Object> Cplayers;
 	public JLabel Lsummary,Lplayer_information,Lcard,Lhouse,Lresult,Lstatus;
-	public JTextArea Tsummary,Tcard,Thouse,Tbet;
+	public JTextField Tsummary,Tcard,Thouse,Tbet;
 	public List<Player> Splayers;
 	public ActionListener BaddListener,BstartListener;
 	public JMenu Mmenu,Mtools,Mstatus;
@@ -49,7 +48,6 @@ public class GameGUI implements Observer{
 	public JPanel panel,Tplayer_information;
 	public GridLayout playerGridLayout;
 	public int ans,house_ans;
-
 
 
 	public GameGUI(GameEngine gameEngine){
@@ -76,14 +74,14 @@ public class GameGUI implements Observer{
 		Mstatus=new JMenu("status");
 		panel=new JPanel();
 		Lsummary=new JLabel("summary:");
-		Tsummary=new JTextArea("summary information");
+		Tsummary=new JTextField("summary information");
 		Tsummary.setEditable(false);
 		Bstart=new JButton("start");
 		Splayers=new ArrayList<Player>();
 		for (Player player:gameEngine.getAllPlayers()){
 			gameEngine.removePlayer(player);
 		}
-		Cplayers=new JComboBox<>();
+		Cplayers=new JComboBox<>(Splayers.toArray());
 		Cplayers.firePopupMenuWillBecomeInvisible();
 		Cplayers.setEditable(false);
 //		Cplayers.setEnabled(false);
@@ -93,13 +91,11 @@ public class GameGUI implements Observer{
 		Bdown=new JButton("last");
 		Bbet=new JButton("bet");
 		Lcard=new JLabel("card");
-		Tcard=new JTextArea("card information");
+		Tcard=new JTextField("card information");
 		Tcard.setEditable(false);
 		Lhouse=new JLabel("house");
-		Thouse=new JTextArea("Thouse information");
-		Tbet=new JTextArea("Bet information");
-		Tbet.setColumns(1);
-		Tbet.setRows(5);
+		Thouse=new JTextField("Thouse information");
+		Tbet=new JTextField("Bet information");
 		Thouse.setEditable(false);
 		Tbet.setEditable(false);
 		//Tplayer_information.setEditable(false);
@@ -114,12 +110,6 @@ public class GameGUI implements Observer{
 
 		DownPlayerListener downListener = new DownPlayerListener(gameEngine, Cplayers, this);
 		Bdown.addActionListener(downListener);
-		
-		StartListener startListener = new StartListener(gameEngine, Splayers, Cplayers,Tbet, this);
-		Bstart.addActionListener(startListener);
-		
-		BetListener betListener = new BetListener(gameEngine, Splayers, Cplayers,Tbet, this);
-		Bbet.addActionListener(betListener);
 
 		Lsummary.setBounds(20, 80, 300, 50);
 		Tsummary.setBounds(20, 130,300, 300);
@@ -150,7 +140,6 @@ public class GameGUI implements Observer{
 				Lresult=new JLabel("total=0");
 				Tplayer_information.add(Lstatus);
 				Tplayer_information.add(Lresult);
-				f.add(Tplayer_information);
 				ans=0;
 			}
 		});
@@ -193,7 +182,6 @@ public class GameGUI implements Observer{
 	public void update(Observable server, Object obj) {
 		// TODO Auto-generated method stub
 		System.out.println("Observer get!");
-		System.out.println(((GameEngineCallbackGUI) server).getFlag());
 		switch (((GameEngineCallbackGUI) server).getFlag()){
 			case 1:
 				Lstatus.setText("gaming");
@@ -209,18 +197,10 @@ public class GameGUI implements Observer{
 				Lstatus.setText("finished");
 			break;
 			case 4:
-				house_ans+=((PlayingCard)obj).getScore();
-				Thouse.setText("house result="+String.valueOf(house_ans));
 			break;
 			case 5:
 			break;
 			case 6:
-				String tmp=new String();
-				tmp="house result="+String.valueOf(house_ans)+"\n";
-				for (Player player:gameEngine.getAllPlayers()){
-					tmp=tmp+player.getPlayerName()+":"+String.valueOf(player.getResult())+"\n";
-				}
-				Thouse.setText(tmp);
 			break;
 		}
 

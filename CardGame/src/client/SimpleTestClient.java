@@ -56,7 +56,6 @@ public class SimpleTestClient
 
    // add logging callback
       gameEngine.addGameEngineCallback(new GameEngineCallbackGUI(gameEngine));
-//      gameEngine.addGameEngineCallback(new GameEngineCallbackImpl());
 
       // all players have played so now house deals
       // GameEngineCallBack.houseResult() is called to log all players (after results are calculated)
