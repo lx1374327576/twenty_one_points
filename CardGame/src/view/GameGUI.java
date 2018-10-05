@@ -12,28 +12,41 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
 import javax.swing.UIManager;
 
 import model.SimplePlayer;
 import model.interfaces.GameEngine;
 import model.interfaces.Player;
-import controller.AddPlayerListener;
 
 public class GameGUI implements Observer{
 
 	protected GameEngine gameEngine;
 	protected JFrame f;
-	protected JButton Bstart,Badd;
-	protected JComboBox<Object> Cplayers,Cmenu;
+	protected JButton Bstart,Badd,Bup,Bdown;
+	protected JComboBox<Object> Cplayers;
 	protected JLabel Lsummary,Lplayer_information,Lcard,Lhouse,Lbet;
+	protected JTextField Tplayer_information,Tsummary,Tcard,Thouse,Tbet;
 	protected List<String> Splayers;
 	protected ActionListener BaddListener,BstartListener;
+	protected JMenu Mmenu;
+	protected JMenuItem Mhelp;
+	protected JMenuBar MMenuBar;
+	protected JPanel panel;
 
 
 	public GameGUI(GameEngine gameEngine){
 		this.gameEngine=gameEngine;
 		//System.out.println("tsy");
-
+		f=new JFrame();
+		f.setTitle("Game Machine");
+		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		f.setSize(800,800);
+		f.setLayout(null);
 
 		BaddListener=new ActionListener(){
 			public void actionPerformed(ActionEvent e){
@@ -42,85 +55,99 @@ public class GameGUI implements Observer{
 				Player player=new SimplePlayer(Integer.toString(tmp+1),"tsy"+Integer.toString(tmp+1),(int)(1+Math.random()*10)*100);
 				gameEngine.addPlayer(player);
 		        Splayers.add("player "+player.getPlayerId());
-		        Cplayers=new JComboBox<>(Splayers.toArray());
+		        Cplayers.addItem("player "+player.getPlayerId());
 //		        gridLayout.setVisible(false);
-		        refresh();
+		        //refresh();
 //		        gridLayout.myshow();
 			}
 		};
 
 		set_font();
-		Cmenu=new JComboBox<>();
+		MMenuBar=new JMenuBar();
+		Mmenu=new JMenu("Menu");
+		Mhelp=new JMenuItem("help");
+		panel=new JPanel();
 		Lsummary=new JLabel("summary:");
+		Tsummary=new JTextField("summary information");
+		Tsummary.setEditable(false);
 		Bstart=new JButton("start");
 		Splayers=new ArrayList<String>();
 		for (Player player:gameEngine.getAllPlayers()){
 			Splayers.add("player "+player.getPlayerId());
-			System.out.println(player.getPlayerId());
 		}
 		Cplayers=new JComboBox<>(Splayers.toArray());
-		Lplayer_information=new JLabel("player infomation");
+		Lplayer_information=new JLabel("player infomation:");
 		Badd=new JButton("add one player");
 		Lbet=new JLabel("bet");
 		Lcard=new JLabel("card");
-//		AddPlayerListener addAction = new AddPlayerListener(gameEngine, Splayers, Cplayers,this);
-
+		Tcard=new JTextField("card information");
+		Tcard.setEditable(false);
+		Lhouse=new JLabel("house");
+		Thouse=new JTextField("Thouse information");
+		Tbet=new JTextField("Bet information");
+		Thouse.setEditable(false);
+		Tbet.setEditable(false);
 		Badd.addActionListener(BaddListener);
+		Tplayer_information=new JTextField("specific information");
+		Tplayer_information.setEditable(false);
+		Bup=new JButton("next");
+		Bdown=new JButton("last");
+
+
+		Lsummary.setBounds(20, 80, 300, 50);
+		Tsummary.setBounds(20, 130,300, 300);
+		//Mmenu.setBounds(0, 0, 200, 50);
+		Cplayers.setBounds(20, 520, 200, 50);
+		Bstart.setBounds(550, 400, 100, 50);
+		Lplayer_information.setBounds(20, 450, 200, 50);
+		Tplayer_information.setBounds(230, 450, 300, 250);
+		Bup.setBounds(20, 600, 80, 60);
+		Bdown.setBounds(120, 600, 80, 60);
+		Badd.setBounds(550, 500, 200, 200);
+		Lcard.setBounds(550 , 100, 100, 50);
+		Tcard.setBounds(550,150,200,200);
+		Lhouse.setBounds(330, 30, 200, 50);
+		Thouse.setBounds(330,80,200,150);
+		Lbet.setBounds(330, 240, 200, 50);
+		Tbet.setBounds(330,290,200,150);
+		panel.setBounds(0, 0, 50, 30);
+
+		Mmenu.add(Mhelp);
+		MMenuBar.add(Mmenu);
+		panel.add(MMenuBar);
+
+		//panel.setVisible(true);
 
 		//System.out.println("tsy1");
 		refresh();
 	}
 
 	public void refresh(){
-		System.out.println("aa");
-		
-		
-		if (f!=null)f.setVisible(false);
-		f=new JFrame();
-		f.setLayout(null);
 
-		Lsummary.setBounds(20, 30, 300, 400);
+		f.add(panel);
+		f.add(Bdown);
+		f.add(Bup);
 		f.add(Lsummary);
-
-		Cmenu.setBounds(0, 0, 100, 20);
-		f.add(Cmenu);
-
-		Cplayers.setBounds(20, 450, 200, 50);
+		f.add(Tsummary);
 		f.add(Cplayers);
-
-		Bstart.setBounds(550, 500, 100, 20);
 		f.add(Bstart);
-
-		Lplayer_information.setBounds(220, 450, 400, 200);
 		f.add(Lplayer_information);
-
-		Badd.setBounds(550, 600, 200, 20);
+		f.add(Tplayer_information);
 		f.add(Badd);
-
-		Lcard.setBounds(550 , 300, 100, 20);
 		f.add(Lcard);
-
-		Lhouse=new JLabel("house");
-		Lhouse.setBounds(400, 100, 200, 100);
+		f.add(Tcard);
 		f.add(Lhouse);
-
-
-		Lbet.setBounds(400, 350, 200, 100);
+		f.add(Thouse);
 		f.add(Lbet);
-
-		f.setTitle("Game Machine");
-		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		f.setSize(800,800);
+		f.add(Tbet);
+		f.add(panel);
 		f.setVisible(true);
 	}
 
 	@Override
-	public void update(Observable arg0, Object b) {
+	public void update(Observable arg0, Object arg1) {
 		// TODO Auto-generated method stub
-
-		System.out.println((String)b);
-		
-
+		System.out.println("aa");
 
 	}
 
@@ -173,7 +200,6 @@ public class GameGUI implements Observer{
 			ans++;
 		}
 		return ans;
-
 	}
 
 }
