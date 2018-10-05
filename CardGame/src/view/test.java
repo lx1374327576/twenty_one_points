@@ -1,6 +1,6 @@
 package view;
 
-import view.GameGUI;
+
 import view.GameEngineCallbackGUI;
 import model.GameEngineImpl;
 

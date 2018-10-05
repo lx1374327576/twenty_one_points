@@ -27,16 +27,18 @@ import model.interfaces.Player;
 import controller.AddPlayerListener;
 import controller.UpPlayerListener;
 import controller.DownPlayerListener;
+import controller.StartListener;
+import controller.BetListener;
 
 public class GameGUI implements Observer{
 
 	protected GameEngine gameEngine;
 	protected JFrame f;
-	protected JButton Bstart,Badd,Bup,Bdown;
+	protected JButton Bstart,Badd,Bup,Bdown,Bbet;
 	protected JComboBox<Object> Cplayers;
-	protected JLabel Lsummary,Lplayer_information,Lcard,Lhouse,Lbet;
+	protected JLabel Lsummary,Lplayer_information,Lcard,Lhouse;
 	protected JTextField Tplayer_information,Tsummary,Tcard,Thouse,Tbet;
-	protected List<String> Splayers;
+	protected List<Player> Splayers;
 	protected ActionListener BaddListener,BstartListener;
 	protected JMenu Mmenu,Mtools,Mstatus;
 	protected JMenuItem Mrestart,Mexit;
@@ -70,11 +72,11 @@ public class GameGUI implements Observer{
 		Tsummary=new JTextField("summary information");
 		Tsummary.setEditable(false);
 		Bstart=new JButton("start");
-		Splayers=new ArrayList<String>();
+		Splayers=new ArrayList<Player>();
 		for (Player player:gameEngine.getAllPlayers()){
 			gameEngine.removePlayer(player);
 		}
-		Cplayers=new JComboBox<>(Splayers.toArray());
+		Cplayers=new JComboBox<>();
 		Cplayers.firePopupMenuWillBecomeInvisible();
 		Cplayers.setEditable(false);
 //		Cplayers.setEnabled(false);
@@ -82,7 +84,7 @@ public class GameGUI implements Observer{
 		Badd=new JButton("add one player");
 		Bup=new JButton("next");
 		Bdown=new JButton("last");
-		Lbet=new JLabel("bet");
+		Bbet=new JButton("bet");
 		Lcard=new JLabel("card");
 		Tcard=new JTextField("card information");
 		Tcard.setEditable(false);
@@ -104,6 +106,12 @@ public class GameGUI implements Observer{
 		
 		DownPlayerListener downListener = new DownPlayerListener(gameEngine, Cplayers, this);
 		Bdown.addActionListener(downListener);
+		
+		StartListener startListener = new StartListener();
+		Bstart.addActionListener(startListener);
+		
+		BetListener betListener = new BetListener(gameEngine, Splayers, Cplayers,Tbet, this);
+		Bbet.addActionListener(betListener);
 
 		
 
@@ -121,7 +129,7 @@ public class GameGUI implements Observer{
 		Tcard.setBounds(550,150,200,200);
 		Lhouse.setBounds(330, 30, 200, 50);
 		Thouse.setBounds(330,80,200,150);
-		Lbet.setBounds(330, 240, 200, 50);
+		Bbet.setBounds(330, 240, 200, 50);
 		Tbet.setBounds(330,290,200,150);
 		panel.setBounds(0, 0, 200, 30);
 
@@ -153,7 +161,7 @@ public class GameGUI implements Observer{
 		f.add(Tcard);
 		f.add(Lhouse);
 		f.add(Thouse);
-		f.add(Lbet);
+		f.add(Bbet);
 		f.add(Tbet);
 		f.add(panel);
 		f.setVisible(true);
